@@ -1,29 +1,40 @@
-# Invoice → Excel Extractor (FREE version)
+# Invoice → Excel Extractor (v4)
 
-Ye version bilkul FREE hai — koi API key nahi, koi cost nahi. Sab kuch
-tumhare computer pe hi chalta hai, Tesseract OCR ka use karke.
+Ab TEEN modes hain (sidebar se switch karo):
 
-**Important:** Free OCR, AI jitna accurate nahi hota — especially amounts
-(numbers) ke liye. Har entry ko download se pehle check/correct zaroor
-karo. App har row ke saath raw OCR text aur "amount in words" wali line
-bhi dikhata hai taaki galat number ko sahi karna easy ho.
+1. **Free (OCR, local)** — bilkul free, Tesseract se local chalta hai.
+   Sabse kam accurate.
+2. **Free AI (Gemini)** — Google Gemini ka free tier, bilkul free (koi
+   card nahi chahiye), AI jaisi samajh milti hai — handwritten notes,
+   confusing layouts wagera Free OCR se kaafi behtar padh leta hai.
+   Free tier rate-limited hai, isliye bulk invoices me thoda slow ho
+   sakta hai ya kabhi-kabhi retry lag sakta hai.
+3. **Paid (Claude)** — sabse accurate, ~₹1-2/invoice.
 
-## Setup (do cheezein install karni hongi)
+## Free AI (Gemini) key kaise banayein
 
-### 1) Tesseract OCR program install karo (ye Python package se alag hai)
+1. https://aistudio.google.com/apikey pe jao
+2. Google account se login karo (koi card/billing nahi chahiye)
+3. "Create API key" dabao, key copy kar lo
+4. App ke sidebar me "Free AI (Gemini)" mode select karke wahi key paste
+   kar do
 
-**Windows:**
-1. Ye link kholo: https://github.com/UB-Mannheim/tesseract/wiki
-2. Latest installer (.exe) download karo aur install karo (default location
-   pe hi install hone do: `C:\Program Files\Tesseract-OCR\`)
+## v3 features (waise hi hain)
 
-**Mac:** terminal me `brew install tesseract`
+- **Column headings edit** kar sakte ho sidebar se
+- **Extra columns** add kar sakte ho (Remarks, Category, etc.)
+- **Flags column** — GSTIN format aur math mismatch automatically pakad
+  leta hai
+- **Master file save** — invoice_master.xlsx me entries jama hoti rahengi
 
-**Linux:** terminal me `sudo apt install tesseract-ocr`
+## Setup
 
-### 2) Python libraries install karo
+### 1) Tesseract OCR install karo (sirf "Free (OCR)" mode ke liye zaroori)
 
-Terminal me app wale folder me jaake:
+Windows: https://github.com/tesseract-ocr/tesseract/releases se
+`tesseract-ocr-w64-setup-*.exe` download karke install karo.
+
+### 2) Libraries install karo
 
 ```
 pip install -r requirements.txt
@@ -35,36 +46,20 @@ pip install -r requirements.txt
 streamlit run app.py
 ```
 
-Browser khud khul jayega (localhost).
-
-Agar Windows pe error aaye "Tesseract not found" jaisa, to app.py ke
-upar wale hisse me dekho — waha ek line hai jo Tesseract ka path set karti
-hai. Agar tumne default location pe install kiya hai to automatically
-kaam kar jayega. Agar alag jagah install kiya hai, terminal me ye chalao
-(apna path daal ke):
-
-```
-set TESSERACT_PATH=C:\Program Files\Tesseract-OCR\tesseract.exe
-streamlit run app.py
-```
-
 ## Use kaise karein
 
-1. Ek ya multiple invoice files upload karo (PDF/JPG/PNG).
-2. "Extract entries" dabao.
-3. Table me values carefully check karo — GSTIN, amounts especially
-   (OCR inme galti kar sakta hai). Neeche "Raw OCR reference" expand
-   karke original text/amount-in-words dekh sakte ho agar koi field
-   khaali ya galat lage.
-4. Table me seedha cell edit kar sakte ho (double-click).
-5. "Download Excel" se final .xlsx file mil jayegi.
+1. Sidebar me mode choose karo.
+2. Agar Free AI ya Paid mode hai, API key daalo.
+3. Chaho to column headings/extra columns customize kar lo.
+4. Invoice files upload karo, "Extract entries" dabao.
+5. Flags column check karo, jo bhi manually fill karna hai wo bhar do.
+6. "Download Excel" ya "Save to master file" se final file le lo.
 
-## Free vs Paid — quick note
+## Kaunsa mode kab use karein
 
-Ye free version regex/pattern-matching se kaam karta hai, isliye clean
-printed invoices pe theek chalta hai but complex table layouts ya
-handwritten notes (jaise "Paid" stamp) pe struggle karta hai. Agar
-kabhi accuracy important ho jaye (jaise bulk processing ke liye), to
-AI-powered (Claude API) version bhi maine banaya tha — bahut kam cost
-pe (~1-2 paise/invoice) zyada accurate result deta hai. Bata dena agar
-wo version chahiye future me.
+- Roz ke normal, clean-printed invoices → **Free (OCR)** try karo pehle
+- Agar OCR bahut galtiyan kar raha ho, ya thodi messy/handwritten
+  invoices hain → **Free AI (Gemini)** try karo, bilkul free hai
+- Agar bulk/important invoices hain jaha galti afford nahi kar sakte,
+  ya Gemini rate-limit se rukk raha hai → **Paid (Claude)**, bahut kam
+  cost pe sabse reliable
