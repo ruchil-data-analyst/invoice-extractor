@@ -6,3 +6,4 @@ pillow
 pytesseract
 anthropic
 google-genai
+requests
